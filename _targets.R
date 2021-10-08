@@ -22,6 +22,10 @@ run_dct <- function(a, b){
   
 }
 
+run_alignment_gene_quantification <- function(a, b){
+  
+}
+
 # plan --------------------------------------------------------------------
 
 
@@ -35,18 +39,22 @@ list(
              ),
   
   tar_target(mouse_disease_signature, 
-             rna_seq_reads),
+             run_alignment_gene_quantification(rna_seq_reads, mouse_ref_genome)
+             ),
   tar_target(mouse_drug_signature, 
-             rna_seq_reads),
+             run_alignment_gene_quantification(rna_seq_reads, mouse_ref_genome)),
   tar_target(human_disease_signature,
-             iris),
+             iris), # scrape data from sql
   tar_target(biological_genesets_ql,
              iris),
   tar_target(reversal_mouse,
              run_dct(mouse_disease_signature, mouse_drug_signature)
              ),
   tar_target(reversal_human,
-             run_dct(mouse_disease_signature, mouse_drug_signature))
+             run_dct(human_disease_signature, mouse_drug_signature))
   
    # Call your custom functions as needed.
 )
+
+# TODO we eventually created our own workflow
+# Explain building in a workflow step by step
