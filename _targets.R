@@ -18,7 +18,7 @@ tar_option_set(packages = "dplyr")
 
 # functions ---------------------------------------------------------------
 
-run_dct <- function(a, b){
+run_dct <- function(a, b, c){
   
 }
 
@@ -45,13 +45,13 @@ list(
              run_alignment_gene_quantification(rna_seq_reads, mouse_ref_genome)),
   tar_target(human_disease_signature,
              iris), # scrape data from sql
-  tar_target(biological_genesets_ql,
+  tar_target(biological_genesets_database,
              iris),
   tar_target(reversal_mouse,
-             run_dct(mouse_disease_signature, mouse_drug_signature)
+             run_dct(mouse_disease_signature, mouse_drug_signature, biological_genesets_database)
              ),
   tar_target(reversal_human,
-             run_dct(human_disease_signature, mouse_drug_signature))
+             run_dct(human_disease_signature, mouse_drug_signature, biological_genesets_database))
   
    # Call your custom functions as needed.
 )
