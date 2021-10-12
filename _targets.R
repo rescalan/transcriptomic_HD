@@ -28,33 +28,56 @@ run_alignment_gene_quantification <- function(a, b){
 
 # plan --------------------------------------------------------------------
 
-
-
-# End this file with a list of target objects.
-list(
-  tar_target(rna_seq_reads,
-             iris),
-  tar_target(mouse_ref_genome,
-             iris
-             ),
-  
-  tar_target(mouse_disease_signature, 
-             run_alignment_gene_quantification(rna_seq_reads, mouse_ref_genome)
-             ),
-  tar_target(mouse_drug_signature, 
-             run_alignment_gene_quantification(rna_seq_reads, mouse_ref_genome)),
-  tar_target(human_disease_signature,
-             iris), # scrape data from sql
-  tar_target(biological_genesets_database,
-             iris),
-  tar_target(reversal_mouse,
-             run_dct(mouse_disease_signature, mouse_drug_signature, biological_genesets_database)
-             ),
-  tar_target(reversal_human,
-             run_dct(human_disease_signature, mouse_drug_signature, biological_genesets_database))
-  
-   # Call your custom functions as needed.
-)
+# # End this file with a list of target objects.
+# list(
+#   tar_target(rna_seq_reads,
+#              iris),
+#   tar_target(mouse_ref_genome,
+#              iris
+#              ),
+#   
+#   tar_target(mouse_disease_signature, 
+#              run_alignment_gene_quantification(rna_seq_reads, mouse_ref_genome)
+#              ),
+#   tar_target(mouse_drug_signature, 
+#              run_alignment_gene_quantification(rna_seq_reads, mouse_ref_genome)),
+#   tar_target(human_disease_signature,
+#              iris), # scrape data from sql
+#   tar_target(biological_genesets_database,
+#              iris),
+#   tar_target(reversal_mouse,
+#              run_dct(mouse_disease_signature, mouse_drug_signature, biological_genesets_database)
+#              ),
+#   tar_target(reversal_human,
+#              run_dct(human_disease_signature, mouse_drug_signature, biological_genesets_database))
+#   
+#    # Call your custom functions as needed.
+# )
 
 # TODO we eventually created our own workflow
 # Explain building in a workflow step by step
+biological_geneset_db <- iris
+
+# second set of plan -----------------------------------------------------
+
+list(
+  
+  tar_target(mouse_disease_signature, 
+             run_alignment_gene_quantification(rna_seq_reads_disease)
+  ),
+  tar_target(mouse_drug_signature, 
+             run_alignment_gene_quantification(rna_seq_reads_drug)),
+  
+  tar_target(biological_genesets_database,
+             biological_geneset_db),
+  
+  tar_target(reversal_mouse,
+             run_dct(mouse_disease_signature, mouse_drug_signature, 
+                     biological_genesets_database)
+  )
+  
+)
+
+
+
+
